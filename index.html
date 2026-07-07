@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ironclad Checkers: Neural Network AI</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Include ONNX Runtime Web from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <script type="module" src="app.js" defer></script>
+</head>
+<body>
+    <div id="status">INITIALIZING ENGINE...</div>
+
+    <div class="controls-container">
+        <select id="mode-select">
+            <optgroup label="Human vs Neural Network">
+                <option value="human_vs_nn_blue" selected>👤 Human (Red) vs 🧠 Neural Net (Blue)</option>
+                <option value="human_vs_nn_red">🧠 Neural Net (Red) vs 👤 Human (Blue)</option>
+            </optgroup>
+            <optgroup label="Human vs Heuristic AI">
+                <option value="human_vs_heur_blue">👤 Human (Red) vs ⚙️ Heuristic AI (Blue)</option>
+                <option value="human_vs_heur_red">⚙️ Heuristic AI (Red) vs 👤 Human (Blue)</option>
+            </optgroup>
+            <optgroup label="Heuristic AI vs Neural Network">
+                <option value="heur_vs_nn_blue">⚙️ Heuristic AI (Red) vs 🧠 Neural Net (Blue)</option>
+                <option value="heur_vs_nn_red">🧠 Neural Net (Red) vs ⚙️ Heuristic AI (Blue)</option>
+            </optgroup>
+            <optgroup label="AI vs AI Matches">
+                <option value="nn_vs_nn">🧠 Neural Net vs 🧠 Neural Net</option>
+                <option value="heur_vs_heur">⚙️ Heuristic AI vs ⚙️ Heuristic AI</option>
+            </optgroup>
+        </select>
+        
+        <button id="btn-new-game" class="btn-primary">
+            🔄 New Game
+        </button>
+        
+        <button id="btn-harvest" class="btn-harvest">
+            🌾 Harvest 5000 Training Games
+        </button>
+    </div>
+
+    <div class="game-container">
+        <div class="eval-bar-wrapper">
+            <div id="eval-fill"></div>
+        </div>
+
+        <div id="board"></div>
+        
+        <div class="sidebar">
+            <div class="stats">
+                <div class="stat-line"><span>Depth:</span> <span id="depth-val">--</span></div>
+                <div class="stat-line"><span>Score:</span> <span id="score-val">0.00</span></div>
+            </div>
+            <div id="log"><div>Engine initialized...</div></div>
+        </div>
+    </div>
+</body>
+</html>
