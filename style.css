@@ -1,0 +1,236 @@
+body {
+    background: #0f172a;
+    color: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+}
+
+#status { 
+    font-size: 24px; 
+    font-weight: 800;
+    margin-bottom: 15px; 
+    color: #fbbf24; 
+    text-shadow: 0 0 15px rgba(251, 191, 36, 0.3); 
+}
+
+.controls-container {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#mode-select {
+    padding: 10px 15px;
+    background: #334155;
+    color: white;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+#mode-select:focus {
+    border-color: #3b82f6;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+.btn-harvest {
+    padding: 10px 20px;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-harvest:hover {
+    background: #059669;
+}
+
+.btn-harvest:disabled {
+    background: #64748b;
+    cursor: not-allowed;
+}
+
+.game-container { 
+    display: flex; 
+    gap: 30px; 
+    background: #1e293b; 
+    padding: 25px; 
+    border-radius: 12px; 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+    border: 1px solid #334155; 
+}
+
+/* Container rules for holding evaluation bars side by side */
+.eval-bars-container {
+    display: flex;
+    gap: 10px;
+}
+
+.eval-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.eval-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+.eval-bar-wrapper {
+    width: 20px; 
+    height: 500px; 
+    background-color: #3b82f6; 
+    position: relative; 
+    border-radius: 4px; 
+    overflow: hidden; 
+    border: 1px solid #475569;
+}
+
+.eval-fill {
+    width: 100%; 
+    height: 50%; 
+    background-color: #ef4444; 
+    position: absolute; 
+    bottom: 0; 
+    transition: height 0.4s ease;
+}
+
+#board { 
+    display: grid; 
+    grid-template-columns: repeat(8, 60px); 
+    grid-template-rows: repeat(8, 60px); 
+    border: 8px solid #0f172a; 
+    border-radius: 4px; 
+    user-select: none;
+}
+
+.sq { 
+    width: 60px; 
+    height: 60px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: relative;
+}
+
+.dark { background: #334155; }
+.light { background: #94a3b8; }
+
+.sq.selected {
+    background: #d97706 !important;
+    box-shadow: inset 0 0 12px #78350f;
+}
+
+.sq.valid-target {
+    cursor: pointer;
+}
+
+.sq.valid-target::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: rgba(16, 185, 129, 0.75);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px #10b981;
+}
+
+.piece { 
+    width: 48px; 
+    height: 48px; 
+    border-radius: 50%; 
+    border: 3px solid rgba(0,0,0,0.3); 
+    position: relative; 
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+    cursor: pointer;
+}
+
+.piece:hover {
+    transform: scale(1.05);
+}
+
+.red { 
+    background: #ef4444; 
+    box-shadow: inset 0 -4px 0 #991b1b, 0 4px 10px rgba(0,0,0,0.4); 
+}
+
+.blue { 
+    background: #3b82f6; 
+    box-shadow: inset 0 -4px 0 #1e40af, 0 4px 10px rgba(0,0,0,0.4); 
+}
+
+.king::after { 
+    content: '👑'; 
+    font-size: 24px; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    color: rgba(255,255,255,0.8); 
+}
+
+.sidebar { 
+    width: 320px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+#log { 
+    background: #0f172a; 
+    border-radius: 8px; 
+    padding: 12px; 
+    font-family: 'Consolas', monospace; 
+    font-size: 13px; 
+    overflow-y: scroll; 
+    height: 380px; 
+    border: 1px solid #334155; 
+    color: #10b981; 
+}
+
+.stats { 
+    background: #0f172a; 
+    padding: 15px; 
+    border-radius: 8px; 
+    border: 1px solid #334155; 
+}
+
+.stat-line { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 5px; 
+    font-size: 14px; 
+}
