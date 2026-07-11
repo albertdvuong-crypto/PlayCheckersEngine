@@ -23,7 +23,6 @@ self.onmessage = async function(e) {
     if (msg.cmd === 'search') {
         const { board, turn, gameHistory, thinkTime, activePiece, useNN, positionToken } = msg;
         
-        // Configure evaluation engine (NN vs Heuristic) before searching
         setEvalMode(useNN !== undefined ? useNN : true);
         setTimeLimit(thinkTime);
         
@@ -87,6 +86,11 @@ self.onmessage = async function(e) {
                 bestMove: globalBestMove,
                 positionToken: positionToken
             });
+            
+            // Instantly snap to the shortest mate path and stop searching deeper
+            if (Math.abs(globalBestVal) > 80000) {
+                break;
+            }
             
             moves.sort((a, b) => {
                 if (a === globalBestMove) return -1;
