@@ -23,14 +23,14 @@ export let currentHeuristicStyle = 'linear';
 export function setEvalMode(useNN) {
     if (useNeuralNetwork !== useNN) {
         useNeuralNetwork = useNN;
-        tt.clear(); // Clear transposition table when switching engines to prevent score corruption
+        tt.clear(); 
     }
 }
 
 export function setHeuristicStyle(style) {
     if (currentHeuristicStyle !== style) {
         currentHeuristicStyle = style;
-        tt.clear(); // Clear cache so old style evaluations do not corrupt new search trees
+        tt.clear(); 
     }
 }
 
@@ -104,7 +104,6 @@ export function getMoves(b, player, activePiece = null) {
     return jumps.length > 0 ? {moves: jumps, isJump: true} : {moves: moves, isJump: false};
 }
 
-// --- ONNX LOADER & SYNCHRONOUS INFERENCE WRAPPER ---
 export async function loadONNXModel(modelUrl) {
     if (typeof ort === 'undefined') {
         importScripts('https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js');
@@ -261,7 +260,6 @@ export function countTotalPieces(b) {
     return count;
 }
 
-// --- MINIMAX TREE SEARCH ---
 export function alphaBeta(b, depth, alpha, beta, maximizing, player, activePiece = null, gameHistory = []) {
     checkTime();
     if (abortSearch) return 0;
@@ -297,7 +295,8 @@ export function alphaBeta(b, depth, alpha, beta, maximizing, player, activePiece
         if (activePiece) {
             return alphaBeta(b, depth - 1, alpha, beta, !maximizing, player === 1 ? 2 : 1, null, gameHistory);
         }
-        return maximizing ? (-100000 + 2 * (10 - depth)) : (100000 - 2 * (10 - depth));
+        // Fixed Depth Math: Rewards finding mate faster, punishes finding mate slower.
+        return maximizing ? (-100000 - depth) : (100000 + depth);
     }
 
     let originalAlpha = alpha;
@@ -340,7 +339,11 @@ export function alphaBeta(b, depth, alpha, beta, maximizing, player, activePiece
         let flag = FLAG_EXACT;
         if (bestVal <= originalAlpha) flag = FLAG_ALPHA;
         else if (bestVal >= beta) flag = FLAG_BETA;
-        tt.set(hash, {val: bestVal, depth: depth, flag: flag});
+        
+        // Exclude forced mates from the Transposition Table to prevent depth corruption
+        if (Math.abs(bestVal) < 80000) {
+            tt.set(hash, {val: bestVal, depth: depth, flag: flag});
+        }
     }
     return bestVal;
 }
